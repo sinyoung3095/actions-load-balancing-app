@@ -451,6 +451,10 @@
     padding: 20px;
     border-top: 1px solid rgba(24,37,61,0.0600);
 }
+.sort-options + .list-container, .sort-options + .int-wrapper {
+    height: calc(100% - 56px);
+    overflow-y: auto;
+}
 
 .list-item:first-child {
     border-top: none;
