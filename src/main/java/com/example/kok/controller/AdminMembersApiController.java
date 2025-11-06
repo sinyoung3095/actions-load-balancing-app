@@ -36,7 +36,7 @@ public class AdminMembersApiController implements AdminMembersApiControllerDocs 
 
     @GetMapping("detail/{id}")
     public ResponseEntity<?> findUserMemberById(@PathVariable("id") Long id) {
-        UserMemberDTO userMemberDTO = memberService.findMembersByMemberId(id);
+        Optional<UserMemberDTO> userMemberDTO = memberService.findMembersByMemberId(id);
         return ResponseEntity.ok(userMemberDTO);
     }
 
