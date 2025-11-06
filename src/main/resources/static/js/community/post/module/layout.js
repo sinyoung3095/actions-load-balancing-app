@@ -3,7 +3,6 @@ const postLayout = (() => {
     const showList = (postsCriteria) => {
         const postContainer = document.querySelector("#post-container");
         let text = ``;
-
         postsCriteria.posts.forEach((post) => {
             text += `
             <div class="post-8" data-post-id="${post.id}">
@@ -45,9 +44,8 @@ const postLayout = (() => {
             else {
                 text += `
                     <p class="report-6">게시글 신고</p>`;
-                        }
-
-                        text += `
+            }
+            text += `
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +62,6 @@ const postLayout = (() => {
                             </div>
                         </div>
                     </div>`;
-
             if (post.postFiles && post.postFiles.length > 0) {
                 text += `
                     <div class="file">
@@ -83,7 +80,6 @@ const postLayout = (() => {
                         </div>
                     </div>`;
             }
-
             text += `
                 </div>
                 <div class="post-20">
@@ -116,16 +112,14 @@ const postLayout = (() => {
         });
         postContainer.innerHTML += text;
     }
-
     // 게시글 상세 모달
     const showDetail = (post) => {
         const detailModal = document.getElementById("post-detail-modal");
         const detailContainer = detailModal.querySelector(".reply-left");
-
         let detail = `
             <div class="post-9">
                 <div>
-                    <img alt="image" width="40" height="40" src="${post.memberProfileUrl || '/images/main-page/image3.png'}"
+                    <img alt="image" width="40" height="40" src="${post.memberProfileUrl || '/images/member/profile.png'}"
                     style="color: transparent; border-radius: 999px; cursor: pointer; max-height: 40px; max-width: 40px; min-height: 40px; min-width: 40px; object-fit: contain; background-color: #ccc;">
                 </div>
                 <div class="post-10">
@@ -146,9 +140,8 @@ const postLayout = (() => {
                         <svg class="btn" aria-label="icon" color="foregrounds.neutral.tertiary" fill="currentColor" height="20" role="img" width="20" >
                             <path clip-rule="evenodd" d="M12 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5m0-4c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5m0 11c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5" fill-rule="evenodd"></path>
                         </svg>`;
-
-                    if (post.owner) {
-                        detail += `
+        if (post.owner) {
+            detail += `
                             <div class="report-1">
                                 <div class="report-2">
                                     <div class="report-3">
@@ -162,10 +155,9 @@ const postLayout = (() => {
                                     </div>
                                 </div>
                             </div>`;
-                    }
-
-                    else {
-                        detail += `
+        }
+        else {
+            detail += `
                             <div class="report-1">
                                 <div class="report-2">
                                     <div class="report-3">
@@ -177,9 +169,8 @@ const postLayout = (() => {
                                     </div>
                                 </div>
                             </div>`;
-                    }
+        }
         detail += `
-
                     </button>
                 </div>
             </div>
@@ -191,7 +182,6 @@ const postLayout = (() => {
                         </div>
                     </div>
                 </div>`;
-
         if (post.postFiles && post.postFiles.length > 0) {
             detail += `
                 <div class="file">
@@ -210,7 +200,6 @@ const postLayout = (() => {
                     </div>
                 </div>`;
         }
-
         detail += `
             </div>
             <div class="post-20">
@@ -229,10 +218,77 @@ const postLayout = (() => {
                     </div>
                 </div>
             </div>`;
-
         detailContainer.innerHTML = detail;
         detailModal.style.display = "flex";
     };
-
     return { showList : showList, showDetail : showDetail };
+})();
+// 취업률 모달
+const employmentLayout = (() => {
+    const tbody = document.getElementById("employment-table-body");
+    const pagination = document.createElement("div");
+    pagination.classList.add("employment-pagination");
+    let rows = [];
+    let currentPage = 1;
+    const rowCount = 10;
+    const employDataTable = (page = 1) => {
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        currentPage = page;
+        const start = (page - 1) * rowCount;
+        const end = start + rowCount;
+        const pageData = rows.slice(start, end);
+        if (pageData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="2">데이터가 없습니다.</td></tr>`;
+            return;
+        }
+        pageData.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${row.MJR_NM}</td>
+                <td>${row.EMPLYMT_RT}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        renderPagination();
+    };
+    // 페이징 버튼
+    const renderPagination = () => {
+        pagination.innerHTML = "";
+        const total = rows.length;
+        const realEnd = Math.ceil(total / rowCount);
+        const pageCount = 10;
+        const endPage = Math.min(Math.ceil(currentPage / pageCount) * pageCount, realEnd);
+        const startPage = endPage - pageCount + 1;
+        const hasPrev = startPage > 1;
+        const hasNext = endPage < realEnd;
+        if (hasPrev) {
+            const prev = document.createElement("button");
+            prev.textContent = "<";
+            prev.addEventListener("click", () => employDataTable(startPage - 1));
+            pagination.appendChild(prev);
+        }
+        for (let i = startPage; i <= endPage; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = i === currentPage ? "active" : "";
+            btn.addEventListener("click", () => employDataTable(i));
+            pagination.appendChild(btn);
+        }
+        if (hasNext) {
+            const next = document.createElement("button");
+            next.textContent = ">";
+            next.addEventListener("click", () => employDataTable(endPage + 1));
+            pagination.appendChild(next);
+        }
+        const modalContent = document.querySelector(".employment-modal-content");
+        if (modalContent && !modalContent.querySelector(".employment-pagination")) {
+            modalContent.appendChild(pagination);
+        }
+    };
+    const setEmployData = (data) => {
+        rows = data;
+        employDataTable(1);
+    };
+    return { setEmployData : setEmployData, employDataTable : employDataTable };
 })();
