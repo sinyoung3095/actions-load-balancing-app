@@ -59,4 +59,6 @@ aws:
   region: ${AWS_REGION}
 
 sms:
-  api: { access: ${SMS_KEY} , secret: ${SMS_SECRET}  }
+  api:
+    access: ${SMS_KEY}
+    secret: ${SMS_SECRET}
