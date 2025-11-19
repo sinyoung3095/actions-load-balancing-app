@@ -13,7 +13,7 @@ openSearchBtn.addEventListener("click", async () => {
     const requestExperienceDTO = await (await fetch("/api/main/requestExperience")).json();
     console.log(experienceNoticeDTO)
 
-    const response = await fetch("https://variation-enhancing-animation-sleeps.trycloudflare.com/api/recommend",{
+    const response = await fetch("https://counter-abc-vertical-except.trycloudflare.com/api/recommend",{
         method: "POST",
         headers: {
             "Content-Type":"application/json"
