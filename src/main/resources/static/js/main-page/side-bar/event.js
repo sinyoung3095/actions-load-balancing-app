@@ -198,11 +198,12 @@ document.querySelectorAll(".setting-modal-alarm-button").forEach((button) => {
         button.classList.toggle("off");
         check.classList.toggle("off");
         await  sideService.getLink(sideLayout.showLink);
+        const key =button.dataset.keyword;
         if(button.classList.contains("off")){
             console.log(button.dataset.keyword);
-            await sideService.setInactive({keyword:button.dataset.keyword});
+            await sideService.setInactive(key);
 
-        }else{ await sideService.setActive({keyword:button.dataset.keyword});
+        }else{ await sideService.setActive(key);
             }
     });
 });
